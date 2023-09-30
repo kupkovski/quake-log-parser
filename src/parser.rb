@@ -1,17 +1,26 @@
 class Parser
-  def parse
 
+  require 'pry'
+  require 'pry-nav'
+
+  def initialize(quake_log_path:)
+    @quake_log_path = quake_log_path
+  end
+
+  def parse
+    raise ArgumentError, 'quake_log_path should not be empty' if quake_log_path.nil?
+    raise ArgumentError, 'quake_log_path should not be empty' if quake_log_path.empty?
     games = {}
     game_number = 0
 
-    File.readlines('log.txt', chomp: true).each do |line|
+
+    File.readlines(quake_log_path, chomp: true).each do |line|
       if line.match(/InitGame\:/)
         game_number += 1
         games[game_number] ||= {}
       end
 
       if line.match(/Kill\:/)
-        # games[game_number] << line
         parsed_line = line.match(/(<world>|[\w|\s]+)\skilled\s([\w|\s]+)by\s([\w|\s]+)/)
         if parsed_line
           killer_char = parsed_line[1]&.strip
@@ -24,10 +33,12 @@ class Parser
 
           games[game_number]['kills'] ||= {}
 
+          # binding.pry
           if killer_char == '<world>'
-            games[game_number]['kills'][killer_char] && games[game_number]['kills'][killer_char] -= 1
+            games[game_number]['kills'][killed_char] ||= 0
+            games[game_number]['kills'][killed_char] -= 1
           else
-          games[game_number]['kills'][killer_char] ||= 0
+            games[game_number]['kills'][killer_char] ||= 0
             games[game_number]['kills'][killer_char] += 1
           end
 
@@ -36,8 +47,11 @@ class Parser
 
     end
 
-    puts games
+    games
   end
+
+  private
+  attr_reader :quake_log_path
 end
 
 # expected result:
@@ -50,9 +64,3 @@ end
 #   "Zeh": 20
 #   }
 # }
-
-
-
-
-
-Parser.new.parse
