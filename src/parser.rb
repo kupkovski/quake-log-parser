@@ -23,6 +23,9 @@ class Parser
       if line.match(/Kill\:/)
         parsed_line = line.match(/(<world>|[\w|\s]+)\skilled\s([\w|\s]+)by\s([\w|\s]+)/)
         if parsed_line
+          games[game_number]['total_kills'] ||= 0
+          games[game_number]['total_kills'] += 1
+
           killer_char = parsed_line[1]&.strip
           killed_char = parsed_line[2]&.strip
           killing_method = parsed_line[3]&.strip

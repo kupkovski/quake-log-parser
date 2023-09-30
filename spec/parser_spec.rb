@@ -38,9 +38,29 @@ RSpec.describe Parser do
         end
       end
 
-      context 'containing one game' do
-        let(:quake_log_path) { __dir__ + '/fixtures/single_game.log' }
-        expected = {1=>{"kills"=>{"Isgalamido"=>0}, "players"=>["Isgalamido", "Mocinha"]}}
+      context 'containing one simple game' do
+        let(:quake_log_path) { __dir__ + '/fixtures/simple_game.log' }
+        expected = {1=>{"kills"=>{"Isgalamido"=>0}, "players"=>["Isgalamido", "Mocinha"], "total_kills"=>2}}
+
+        it 'returns scores for this game' do
+          expect(subject.parse).to eq expected
+        end
+      end
+
+      context 'containing one more complex game' do
+        let(:quake_log_path) { __dir__ + '/fixtures/more_complex_game.log' }
+        expected = {1=>{"kills"=>{"Isgalamido"=>0, "Mocinha"=>0}, "players"=>["Isgalamido", "Mocinha"], "total_kills"=>4}}
+
+        it 'returns scores for this game' do
+          expect(subject.parse).to eq expected
+        end
+      end
+
+      context 'containing two games' do
+        let(:quake_log_path) { __dir__ + '/fixtures/two_games.log' }
+        expected = { 1=>{"kills"=>{"Isgalamido"=>0}, "players"=>["Isgalamido", "Mocinha"], "total_kills"=>2},
+                     2=>{"kills"=>{"Isgalamido"=>0, "Mocinha"=>0}, "players"=>["Isgalamido", "Mocinha"], "total_kills"=>4}
+                   }
 
         it 'returns scores for this game' do
           expect(subject.parse).to eq expected
