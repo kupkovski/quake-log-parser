@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class responsible to parse the given log file, fill in the games information and call reports
 class Parser
   require 'pry'
   require 'pry-nav'
