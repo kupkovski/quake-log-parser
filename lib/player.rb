@@ -1,5 +1,5 @@
 class Player
-  WORLD_PLAYER_NAME = "<world>"
+  WORLD_PLAYER_NAME = '<world>'
 
   def initialize(name:)
     @name = name

@@ -26,26 +26,25 @@ class Game
   def report
     {
       name => {
-        "total_kills" => total_kills,
-        "players" => all_player_names,
-        "kills" => kills.reduce({}) do |result, kill|
-                                      if kill.killer.world?
-                                        result[kill.victim.name] ||= 0
-                                        result[kill.victim.name] -= 1
-                                      else
-                                        result[kill.killer.name] ||= 0
-                                        result[kill.killer.name] += 1
-                                      end
-                                        result
-                                      end
+        'total_kills' => total_kills,
+        'players' => all_player_names,
+        'kills' => kills.each_with_object({}) do |kill, result|
+                     if kill.killer.world?
+                       result[kill.victim.name] ||= 0
+                       result[kill.victim.name] -= 1
+                     else
+                       result[kill.killer.name] ||= 0
+                       result[kill.killer.name] += 1
+                     end
+                   end
       }
     }
   end
 
   private
 
-  def killer(name) = Player.new(name: name)
-  def victim(name) = Player.new(name: name)
+  def killer(name) = Player.new(name:)
+  def victim(name) = Player.new(name:)
 
   def total_kills
     kills.count
