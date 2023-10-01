@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../src/parser'
+require_relative '../../lib/parser'
 
 RSpec.describe Game do
   subject { described_class.new(number: 0) }
