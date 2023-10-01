@@ -13,6 +13,10 @@ class Parser
     @games = []
   end
 
+  # rubocop:disable Metrics/MethodLength:
+  # rubocop:disable Metrics/AbcSize:
+  # rubocop:disable Metrics/CyclomaticComplexity:
+  # rubocop:disable Metrics/PerceivedComplexity::
   def parse
     raise ArgumentError, 'quake_log_path should not be empty' if quake_log_path.nil?
     raise ArgumentError, 'quake_log_path should not be empty' if quake_log_path.empty?
@@ -39,6 +43,10 @@ class Parser
     end
     games_report(games)
   end
+  # rubocop:enable Metrics/MethodLength:
+  # rubocop:enable Metrics/AbcSize:
+  # rubocop:enable Metrics/CyclomaticComplexity:
+  # rubocop:enable Metrics/PerceivedComplexity::
 
   private
 
