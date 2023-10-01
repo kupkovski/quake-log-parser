@@ -8,3 +8,5 @@ gem "pry-nav", "~> 1.0"
 
 gem "guard", "~> 2.18"
 gem 'guard-rspec', '~> 4.7'
+
+gem 'simplecov', require: false, group: :test

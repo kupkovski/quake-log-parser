@@ -10,6 +10,19 @@ RSpec.describe Game do
     end
   end
 
+  describe '#parse_kill' do
+    it 'creates killer and victim from the content' do
+      killer_name = 'Psycho'
+      victim_name = 'Easy'
+
+      expect do
+        result = subject.parse_kill(killer_name, victim_name)
+      end.to change { subject.kills.size }.from(0).to(1)
+      expect(subject.kills.first.killer.name).to eq 'Psycho'
+      expect(subject.kills.first.victim.name).to eq 'Easy'
+    end
+  end
+
   describe '#add_kill' do
     it 'adds a player to the killer list' do
       expect(subject.kills).to be_empty
@@ -44,7 +57,7 @@ RSpec.describe Game do
 
     context 'when killer is world' do
       it 'returns blank hash' do
-        expected = {"game_1"=>{"kills"=>{}, "players"=>["Easy"], "total_kills"=>1}}
+        expected = {"game_1"=>{"kills"=>{"Easy" => -1}, "players"=>["Easy"], "total_kills"=>1}}
         killer = Player.new(name: '<world>')
         victim = Player.new(name: 'Easy')
 
