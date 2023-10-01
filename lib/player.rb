@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class responsible to handle information about each player
 class Player
   WORLD_PLAYER_NAME = '<world>'
 

@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 require_relative './kill'
 
+# Class responsible to handle the kills and
+# report it's content
 class Game
   attr_reader :killers, :victims, :kills
 
@@ -51,9 +55,7 @@ class Game
   end
 
   def all_players
-    (kills.map(&:killer) + kills.map(&:victim)).reject do |player|
-      player.world?
-    end.uniq(&:name).sort_by(&:name)
+    (kills.map(&:killer) + kills.map(&:victim)).reject(&:world?).uniq(&:name).sort_by(&:name)
   end
 
   def all_player_names
