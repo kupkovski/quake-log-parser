@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require_relative '../../lib/parser'
 
@@ -10,13 +12,13 @@ RSpec.describe Game do
     end
   end
 
-  describe '#parse_kill' do
+  describe '#build_kill' do
     it 'creates killer and victim from the content' do
       killer_name = 'Psycho'
       victim_name = 'Easy'
 
       expect do
-        result = subject.parse_kill(killer_name, victim_name)
+        subject.build_kill(killer_name, victim_name)
       end.to change { subject.kills.size }.from(0).to(1)
       expect(subject.kills.first.killer.name).to eq 'Psycho'
       expect(subject.kills.first.victim.name).to eq 'Easy'
@@ -37,7 +39,11 @@ RSpec.describe Game do
   describe '#report' do
     context 'with blank data' do
       it 'returns blank hash' do
-        expected = {"game_1"=>{"kills"=>{}, "players"=>[], "total_kills"=>0}}
+        expected = {
+          'game_1' => {
+            'kills' => {}, 'players' => [], 'total_kills' => 0
+          }
+        }
         expect(subject.kills).to be_empty
         expect(subject.report).to eq expected
       end
@@ -49,7 +55,7 @@ RSpec.describe Game do
         killer = Player.new(name: 'Psycho')
         victim = Player.new(name: 'Easy')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         expect(subject.report).to eq expected
       end
@@ -61,8 +67,7 @@ RSpec.describe Game do
         killer = Player.new(name: '<world>')
         victim = Player.new(name: 'Easy')
 
-        subject.add_kill(killer: killer, victim: victim)
-
+        subject.add_kill(killer:, victim:)
 
         expect(subject.report).to eq expected
       end
@@ -71,26 +76,28 @@ RSpec.describe Game do
     context 'with more than one kill' do
       it 'returns blank hash' do
         expected = {
-          "game_1" => {
-              "kills"=>{"Easy"=>1, "John Doe"=>1, "Psycho"=>1},
-              "players"=>["Easy", "John Doe", "Psycho"], "total_kills"=>3
+          'game_1' => {
+            'kills' => {
+              'Easy' => 1, 'John Doe' => 1, 'Psycho' => 1
             },
+            'players' => ['Easy', 'John Doe', 'Psycho'], 'total_kills' => 3
+          }
         }
 
         killer = Player.new(name: 'Psycho')
         victim = Player.new(name: 'Easy')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         killer = Player.new(name: 'John Doe')
         victim = Player.new(name: 'Easy')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         killer = Player.new(name: 'Easy')
         victim = Player.new(name: 'Psycho')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         expect(subject.report).to eq expected
       end
@@ -99,32 +106,32 @@ RSpec.describe Game do
     context 'with more than one kill including <world>' do
       it 'returns blank hash' do
         expected = {
-          "game_1" => {
-            "kills"=>{"Easy"=>0, "Psycho"=>0},
-            "players"=>["Easy", "Psycho"],
-            "total_kills"=>4
+          'game_1' => {
+            'kills' => { 'Easy' => 0, 'Psycho' => 0 },
+            'players' => %w[Easy Psycho],
+            'total_kills' => 4
           }
         }
 
         killer = Player.new(name: 'Psycho')
         victim = Player.new(name: 'Easy')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         killer = Player.new(name: '<world>')
         victim = Player.new(name: 'Psycho')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         killer = Player.new(name: 'Easy')
         victim = Player.new(name: 'Psycho')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         killer = Player.new(name: '<world>')
         victim = Player.new(name: 'Easy')
 
-        subject.add_kill(killer: killer, victim: victim)
+        subject.add_kill(killer:, victim:)
 
         expect(subject.report).to eq expected
       end

@@ -17,7 +17,7 @@ class Game
     "game_#{number + 1}"
   end
 
-  def parse_kill(killer_name, victim_name)
+  def build_kill(killer_name, victim_name)
     killer = killer(killer_name)
     victim = victim(victim_name)
 
