@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+require 'pry'
+require_relative '../lib/parser'
+
+file_name = ARGV[0]
+
+abort('Please enter the log file name') if file_name.nil? || file_name == ''
+abort('File not found') unless File.file?(file_name)
+
+puts Parser.new(quake_log_path: file_name).parse
